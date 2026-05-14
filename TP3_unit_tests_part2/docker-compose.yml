@@ -1,0 +1,31 @@
+version: "3.9"
+
+# Local development environment configuration.
+#
+# Usage:
+#   Start: docker compose up -d
+#   Stop:  docker compose down
+#
+# Note: Integration tests utilize Testcontainers; this file is for manual local execution.
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: tp3_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: tp3db
+      MYSQL_USER: tp3user
+      MYSQL_PASSWORD: tp3pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - tp3_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  tp3_mysql_data:
